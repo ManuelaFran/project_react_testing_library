@@ -1,35 +1,19 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import renderWithRouter from '../renderWithRouter';
-import Pokedex from '../pages/Pokedex';
+import App from '../App';
 import pokemons from '../data';
-
-const pokemonFilter = () => {
-  const pokemonData = {};
-  pokemons.forEach((pokemon) => {
-    pokemonData[pokemon.id] = false;
-  });
-  return pokemonData;
-};
 
 describe('Testando o Pokedex.js', () => {
   test('Testa se a página contém um heading h2 com o texto Encountered pokémons', () => {
-    const { getByText } = renderWithRouter(<Pokedex
-      pokemons={ pokemons }
-      isPokemonFavoriteById={ pokemonFilter() }
-    />);
-
+    const { getByText } = renderWithRouter(<App />);
     const textH2 = getByText(/Encountered pokémons/i);
     expect(textH2).toBeInTheDocument();
   });
 
   test(`Testa se é exibido o próximo pokémon da lista quando o botão Próximo
     pokémon é clicado`, () => {
-    const { getByText } = renderWithRouter(<Pokedex
-      pokemons={ pokemons }
-      isPokemonFavoriteById={ pokemonFilter() }
-    />);
-
+    const { getByText } = renderWithRouter(<App />);
     const nextButton = getByText(/Próximo pokémon/i);
     expect(nextButton).toBeInTheDocument();
 
@@ -41,20 +25,13 @@ describe('Testando o Pokedex.js', () => {
   });
 
   test('Testa se é mostrado apenas um pokémon por vez', () => {
-    const { getAllByTestId } = renderWithRouter(<Pokedex
-      pokemons={ pokemons }
-      isPokemonFavoriteById={ pokemonFilter() }
-    />);
+    const { getAllByTestId } = renderWithRouter(<App />);
     const showPokemon = getAllByTestId('pokemon-name');
     expect(showPokemon).toHaveLength(1);
   });
 
   test('Testa se a Pokédex tem os botões de filtro', () => {
-    const { getByText, getAllByTestId } = renderWithRouter(<Pokedex
-      pokemons={ pokemons }
-      isPokemonFavoriteById={ pokemonFilter() }
-    />);
-
+    const { getByText, getAllByTestId } = renderWithRouter(<App />);
     const buttonAll = getByText(/All/i);
     expect(buttonAll).toBeInTheDocument();
 
@@ -66,11 +43,7 @@ describe('Testando o Pokedex.js', () => {
   });
 
   test('Testa se a Pokédex contém um botão para resetar o filtro', () => {
-    const { getByText } = renderWithRouter(<Pokedex
-      pokemons={ pokemons }
-      isPokemonFavoriteById={ pokemonFilter() }
-    />);
-
+    const { getByText } = renderWithRouter(<App />);
     const resetButton = getByText(/All/i);
     expect(resetButton).toBeInTheDocument();
 
